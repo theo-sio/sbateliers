@@ -1,56 +1,61 @@
-DROP DATABASE IF EXISTS sbateliers ;
-CREATE DATABASE sbateliers ;
+drop database if exists sbateliers;
+create database sbateliers;
 
-USE sbateliers ;
+use sbateliers;
+
+
+drop table if exists Client;
 
 create table Client(
-	numero int auto_increment not null,
-	civilite varchar(10),
+	numero int primary key auto_increment,
+	civilite varchar(8),
 	nom varchar(30),
 	prenom varchar(30),
 	date_de_naissance date,
-	adresse_electronique varchar(40),
-	mot_de_passe varchar(20),
-	adresse_postale varchar(30),
-	code_postale int,
-	ville varchar(30),
-	numero_de_mobile int,
-	primary key(numero)
+	email varchar(50) unique,
+	mdp varchar(30),
+	adresse varchar(50),
+	code_postal int,
+	ville varchar(20),
+	numero_tel int
 );
 
-create table Responsable_ateliers(
-	numero int auto_increment,
-	nom_de_connexion varchar(30),
+
+create table Responsable_Atelier(
+	numero int,
+	nom_de_connexion varchar(40),
 	nom varchar(30),
 	prenom varchar(30),
-	mdp varchar(30),
-	primary key (numero)
+	mdp varchar(40)
 );
+
 
 create table Atelier(
-	numero int auto_increment,
+	numero int primary key,
 	date_enregistrement date,
-	date_et_heure_programmees datetime,
+	date_et_heure_prevue datetime,
 	duree time,
-	nombre_de_places int,
-	theme varchar(20),
-	primary key(numero)
+	nb_places int,
+	theme varchar(70)
 );
+
 
 create table Participation(
-	numeroAtelier int,
+	numero_atelier int,
+	numero_client int,
 	date_inscription date,
-	numero_Client int,
-	foreign key ( numeroAtelier ) references Atelier(numero) 
+	foreign key (numero_atelier) references Atelier(numero)
 	on update cascade
 	on delete cascade,
-	foreign key ( numero_Client ) references Client(numero) 
+	foreign key (numero_client) references Client(numero)
 	on update cascade
 	on delete cascade,
-	primary key (numeroAtelier)
+	primary key (numero_atelier, numero_client)
+	
 );
 
-insert into Atelier(date_enregistrement,date_et_heure_programmees,duree,nombre_de_places,theme) values ('2019-08-02','2019-09-22 15:30:00','01:30:00',20,'karting');
-insert into Atelier(date_enregistrement,date_et_heure_programmees,duree,nombre_de_places,theme) values ('2019-12-07','2020-02-12 14:30:00','03:30:00',10,'bowling');
-insert into Atelier(date_enregistrement,date_et_heure_programmees,duree,nombre_de_places,theme) values ('2019-06-24','2019-07-24 10:30:00','03:0:0',31,'plage');
-insert into Atelier(date_enregistrement,date_et_heure_programmees,duree,nombre_de_places,theme) values ('2018-09-24','2018-09-24 22:21:20','02:20:20',65,'acrobranche');
+
+insert into Atelier(numero,date_enregistrement,date_et_heure_prevue,duree,nb_places,theme) values (1,'2019-08-02','2019-09-22 15:30:00','01:30:00',20,'karting');
+insert into Atelier(numero,date_enregistrement,date_et_heure_prevue,duree,nb_places,theme) values (2,'2019-12-07','2020-02-12 14:30:00','03:30:00',10,'bowling');
+insert into Atelier(numero,date_enregistrement,date_et_heure_prevue,duree,nb_places,theme) values (3,'2019-06-24','2019-07-24 10:30:00','03:0:0',31,'plage');
+insert into Atelier(numero,date_enregistrement,date_et_heure_prevue,duree,nb_places,theme) values (4,'2018-09-24','2018-09-24 22:21:20','02:20:20',65,'acrobranche');
